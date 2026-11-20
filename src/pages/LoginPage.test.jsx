@@ -88,7 +88,7 @@ describe("LoginPage", () => {
       expect(localStorage.getItem("token")).toBeNull()
     });
     expect(await screen.findByRole('alert')).toHaveTextContent(
-      /invalid username or password/i
+      /Invalid credentials/i
     )
     expect(onLoginSuccess).not.toHaveBeenCalled();
   })
