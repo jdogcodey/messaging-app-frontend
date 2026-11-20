@@ -40,9 +40,8 @@ Written test-first around user interactions, rendered UI states, and API integra
   - [ ] Shows validation/error message on missing fields
   - [ ] Shows clear error when email or username already exists
 - Login:
-  - [ ] Logs in with valid credentials and stores JWT
-  - [ ] Attaches JWT to authenticated API requests
-  - [ ] Displays error message on wrong password or unknown email (401)
+  - [x] Logs in with valid credentials and stores JWT
+  - [x] Displays error message on wrong password or unknown username (401)
 
 ### Session & Authorisation
 
