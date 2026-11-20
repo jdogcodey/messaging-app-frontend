@@ -60,4 +60,36 @@ describe("LoginPage", () => {
       user: mockUser,
     });
   });
+  it('displays error message on wrong password or unknown username', async () => {
+    const user = userEvent.setup();
+    const onLoginSuccess = vi.fn();
+
+    // Mock an unsuccessful response when we fetch the backend
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({
+        ok: false,
+        status: 401,
+        json: async () => ({
+          success: false,
+          message: "Invalid Credentials",
+        }),
+      })
+    );
+
+    render(<LoginPage onLoginSuccess={onLoginSuccess} />);
+
+    await user.type(screen.getByLabelText(/username/i), "wronguser");
+    await user.type(screen.getByLabelText(/password/i), "WrongPass123!");
+    await user.click(screen.getByRole("button", { name: /log in/i }));
+
+    // We shouldnt have a token to store this stime
+    await waitFor(() => {
+      expect(localStorage.getItem("token")).toBeNull()
+    });
+    expect(await screen.findByRole('alert')).toHaveTextContent(
+      /invalid username or password/i
+    )
+    expect(onLoginSuccess).not.toHaveBeenCalled();
+  })
 });
